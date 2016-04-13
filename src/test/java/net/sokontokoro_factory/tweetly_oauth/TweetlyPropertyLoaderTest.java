@@ -2,6 +2,8 @@ package net.sokontokoro_factory.tweetly_oauth;
 
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -11,24 +13,40 @@ import static org.hamcrest.CoreMatchers.*;
 public class TweetlyPropertyLoaderTest {
 
     @Test
-    public void getConsumerKey_case1_設定ファイルからoauth_consumer_keyのvalueを読み込める() throws Exception {
-        // case1: 設定ファイルからoauth_consumer_keyのvalueを読み込める
-
+    public void 設定ファイルからoauth_consumer_keyのvalueを読み込める() throws Exception {
         String expect = "test_key";
         String actual = TweetlyPropertyLoader.getConsumerKey();
 
         assertThat(actual, is(expect));
-
     }
 
     @Test
-    public void getConsumerSecret_case1_設定ファイルからoauth_consumer_secretのvalueを読み込める() throws Exception {
-        // case1: 設定ファイルからoauth_consumer_secretのvalueを読み込める
-
+    public void 設定ファイルからoauth_consumer_secretのvalueを読み込める() throws Exception {
         String expect = "test_secret";
         String actual = TweetlyPropertyLoader.getConsumerSecret();
 
         assertThat(actual, is(expect));
+    }
 
+    @Test
+    public void 設定ファイルが存在しない場合例外を出す() throws Exception {
+        // PROPERTIES_FILE_NAMEを書き換えて読み込むpathを変更する
+        TweetlyPropertyLoader tweetlyPropertyLoader = new TweetlyPropertyLoader();
+        Class c = tweetlyPropertyLoader.getClass();
+        Field field = c.getDeclaredField("PROPERTIES_FILE_NAME");
+        field.setAccessible(true);
+        String backup = (String)field.get(tweetlyPropertyLoader);
+
+        // path変更
+        field.set(tweetlyPropertyLoader, "tmp.properties");
+
+        try{
+            TweetlyPropertyLoader.getConsumerSecret();
+            fail();
+        }catch(TweetlyOAuthException e){
+            // expect
+        }finally {
+            field.set(tweetlyPropertyLoader, backup);
+        }
     }
 }

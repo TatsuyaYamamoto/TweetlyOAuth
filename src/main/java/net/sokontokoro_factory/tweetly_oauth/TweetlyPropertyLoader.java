@@ -33,8 +33,13 @@ public class TweetlyPropertyLoader {
     public static String getConsumerSecret()throws TweetlyOAuthException {
         try{
             return loadFile().getProperty(CONSUMER_SECRET_PROPERTY_KEY);
+        }catch(NullPointerException e){
+            e.printStackTrace();
+            throw  new TweetlyOAuthException(TweetlyOAuthException.EXTERNAL_ERROR_NO_PROPERTIES, "プロパティファイルが見つかりませんでした");
+
         }catch(IOException e){
-            throw  new TweetlyOAuthException();
+            e.printStackTrace();
+            throw  new TweetlyOAuthException(TweetlyOAuthException.INTERNALL_ERROR, "プロパティファイルを読み込めませんでした");
         }
     }
 
