@@ -90,14 +90,12 @@ public class Authorization {
         authorizationMap.put("oauth_signature_method",  this.oauthSignatureMethod);
         authorizationMap.put("oauth_timestamp",         this.oauthTimestamp);
         authorizationMap.put("oauth_version",           this.oauthVersion);
-        authorizationMap.put("oauth_signature",         this.oauthSignature);
 
         // optional params
         if(oauthCallback != null)   authorizationMap.put("oauth_callback",  this.oauthCallback);
         if(token != null)           authorizationMap.put("oauth_token",     this.token.getToken());
         if(oauthVerifier != null)   authorizationMap.put("oauth_verifier",  this.oauthVerifier);
-        if(queryParams != null || queryParams.size() != 0)
-                                    authorizationMap.putAll(queryParams);
+        if(queryParams != null && queryParams.size() != 0) authorizationMap.putAll(queryParams);
 
         String signature = Signature.generate(
                 this.oauthConsumerSecret,
