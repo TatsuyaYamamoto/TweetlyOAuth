@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class ServiceProviderConnection {
-	private static String ENDPOINT_GET_REQUEST_TOKEN = "https://api.twitter.com/oauth/request_token";
-	private static String ENDPOINT_GET_ACCESS_TOKEN = "https://api.twitter.com/oauth/access_token";
 
 	/**
 	 * request Tokenオブジェクトを返す。
@@ -25,7 +23,7 @@ public class ServiceProviderConnection {
 	 * @throws TweetlyOAuthException
      */
 	public static RequestToken requestRequestToken(String callback) throws TweetlyOAuthException {
-		Authorization authorization = new Authorization(Authorization.Method.POST, ENDPOINT_GET_REQUEST_TOKEN);
+		Authorization authorization = new Authorization(Authorization.Method.POST, TwitterResourceEndpoint.REQUEST_TOKEN.getString());
 		authorization.setOauthCallback(callback);
 
 		Map requestHeaders = new HashMap<String, String>();
@@ -33,7 +31,7 @@ public class ServiceProviderConnection {
 
 		HttpRequest httpRequest = new HttpRequest();
 		httpRequest.setMethod(HttpRequest.method.POST);
-		httpRequest.setEndpoint(ENDPOINT_GET_REQUEST_TOKEN);
+		httpRequest.setEndpoint(TwitterResourceEndpoint.REQUEST_TOKEN.getString());
 		httpRequest.setHeaders(requestHeaders);
 
 		HttpResponse response = HttpClient.execute(httpRequest);
@@ -51,7 +49,7 @@ public class ServiceProviderConnection {
 	 * @throws TweetlyOAuthException
      */
 	public static AccessToken requestAccessToken(RequestToken requestToken, String oauthVerifier) throws TweetlyOAuthException {
-		Authorization authorization = new Authorization(Authorization.Method.POST, ENDPOINT_GET_REQUEST_TOKEN);
+		Authorization authorization = new Authorization(Authorization.Method.POST, TwitterResourceEndpoint.ACCESS_TOKEN.getString());
 		authorization.setToken(requestToken);
 		authorization.setOauthVerifier(oauthVerifier);
 
@@ -60,7 +58,7 @@ public class ServiceProviderConnection {
 
 		HttpRequest httpRequest = new HttpRequest();
 		httpRequest.setMethod(HttpRequest.method.POST);
-		httpRequest.setEndpoint(ENDPOINT_GET_ACCESS_TOKEN);
+		httpRequest.setEndpoint(TwitterResourceEndpoint.ACCESS_TOKEN.getString());
 		httpRequest.setHeaders(requestHeaders);
 
 		HttpResponse response = HttpClient.execute(httpRequest);
@@ -77,7 +75,7 @@ public class ServiceProviderConnection {
 	 * @throws TweetlyOAuthException
      */
 	public static String get(String endpoint, Map queryParams, AccessToken acccessToken) throws TweetlyOAuthException{
-		Authorization authorization = new Authorization(Authorization.Method.GET, ENDPOINT_GET_REQUEST_TOKEN);
+		Authorization authorization = new Authorization(Authorization.Method.GET, endpoint);
 		authorization.setToken(acccessToken);
 		authorization.setQueryParams(queryParams);
 
@@ -105,7 +103,7 @@ public class ServiceProviderConnection {
 	 * @throws TweetlyOAuthException
 	 */
 	public static String post(String endpoint, Map queryParams, AccessToken acccessToken) throws TweetlyOAuthException{
-		Authorization authorization = new Authorization(Authorization.Method.POST, ENDPOINT_GET_REQUEST_TOKEN);
+		Authorization authorization = new Authorization(Authorization.Method.POST, endpoint);
 		authorization.setToken(acccessToken);
 		authorization.setQueryParams(queryParams);
 

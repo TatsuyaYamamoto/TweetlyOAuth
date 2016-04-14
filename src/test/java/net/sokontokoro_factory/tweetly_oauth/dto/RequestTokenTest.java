@@ -9,7 +9,6 @@ import static org.hamcrest.CoreMatchers.*;
  * Created by TATSUYA-PC4 on 2016/04/15.
  */
 public class RequestTokenTest {
-    
     @Test
     public void getterAndSetter(){
         RequestToken requestToken = new RequestToken();
