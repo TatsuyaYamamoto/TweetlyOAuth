@@ -14,7 +14,7 @@ public class TweetlyPropertyLoaderTest {
 
     @Test
     public void 設定ファイルからoauth_consumer_keyのvalueを読み込める() throws Exception {
-        String expect = "test_key";
+        String expect = "pVJJ9XvhyBSNxS4765zK0qoRw";
         String actual = TweetlyPropertyLoader.getConsumerKey();
 
         assertThat(actual, is(expect));
@@ -22,7 +22,7 @@ public class TweetlyPropertyLoaderTest {
 
     @Test
     public void 設定ファイルからoauth_consumer_secretのvalueを読み込める() throws Exception {
-        String expect = "test_secret";
+        String expect = "WvZMnCdn2p7jdmvuXJ9VBKz4dg9CqL7XUiprTeG0cQtaXFSTaW";
         String actual = TweetlyPropertyLoader.getConsumerSecret();
 
         assertThat(actual, is(expect));
