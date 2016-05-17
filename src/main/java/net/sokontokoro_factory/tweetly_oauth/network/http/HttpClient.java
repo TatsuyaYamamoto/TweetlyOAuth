@@ -80,7 +80,7 @@ public class HttpClient {
     private static URI getUri(String endpoint, Map<String, String> queryParams) throws TweetlyOAuthException {
         StringBuffer uri = new StringBuffer();
         uri.append(endpoint);
-        if(queryParams != null | queryParams.size() != 0){
+        if(queryParams != null && queryParams.size() != 0){
             uri.append("?");
             for(String key: queryParams.keySet()){
                 uri.append(key);
@@ -89,7 +89,7 @@ public class HttpClient {
             }
         }
         try{
-            return new URI(endpoint.toString());
+            return new URI(uri.toString());
         }catch(URISyntaxException e){
             e.printStackTrace();
             throw new TweetlyOAuthException();
