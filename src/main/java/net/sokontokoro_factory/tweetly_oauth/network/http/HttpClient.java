@@ -1,9 +1,12 @@
 package net.sokontokoro_factory.tweetly_oauth.network.http;
 
+import net.sokontokoro_factory.tweetly_oauth.TweetlyOAuth;
 import net.sokontokoro_factory.tweetly_oauth.TweetlyOAuthException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,14 +27,14 @@ public class HttpClient {
             URI uri = getUri(httpRequest.getEndpoint(), httpRequest.getQueryParams());
             connection = (HttpURLConnection)uri.toURL().openConnection();
 
-            /* set URI */
+            /* set HTTP Method */
             switch(httpRequest.getMethod()){
                 case GET:
-                    connection.setRequestMethod("GET");     // httpメソッド
+                    connection.setRequestMethod("GET");
                     break;
                 case POST:
-                    connection.setRequestMethod("POST");    // httpメソッド
-                    connection.setDoOutput(true);           // 出力許可。postのみの設定
+                    connection.setRequestMethod("POST");
+                    connection.setDoOutput(true);
                     break;
             }
 
@@ -49,10 +52,17 @@ public class HttpClient {
             String responseBody;
             Map responseHeaders;
             switch(connection.getResponseCode()){
+
                 case HttpURLConnection.HTTP_OK:
                     responseBody = getResponseBody(connection);
                     responseHeaders = getResponseHeaders(connection);
                     break;
+
+                case HttpURLConnection.HTTP_UNAUTHORIZED:
+                    throw new TweetlyOAuthException(
+                            TweetlyOAuthException.EXTERNAL_ERROR_SIGNATURE,
+                            "TwitterServer間の通信で認証エラーが発生しました");
+
                 default:
                     throw new TweetlyOAuthException();
             }
@@ -66,7 +76,7 @@ public class HttpClient {
         }catch(IOException e){
             throw new TweetlyOAuthException();
         }finally {
-            connection.disconnect();
+            if(connection != null) connection.disconnect();
         }
     }
 
@@ -99,12 +109,19 @@ public class HttpClient {
     }
 
     private static String getResponseBody(HttpURLConnection connection) throws IOException {
-        InputStream in = connection.getInputStream();
-        byte bodyByte[] = new byte[1024];
-        in.read(bodyByte);
-        in.close();
+        InputStream inputStream = connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
-        return bodyByte.toString();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        String line;
+
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line);
+        }
+        bufferedReader.close();
+
+        return stringBuilder.toString();
     }
 
     private static Map getResponseHeaders(HttpURLConnection connection){

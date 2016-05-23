@@ -23,10 +23,14 @@ public class ServiceProviderConnection {
 	 * @throws TweetlyOAuthException
      */
 	public static RequestToken requestRequestToken(String callback) throws TweetlyOAuthException {
-		Authorization authorization = new Authorization(Authorization.Method.POST, TwitterResourceEndpoint.REQUEST_TOKEN.getString());
+		/* setup */
+		Authorization authorization = new Authorization(
+				Authorization.Method.POST,
+				TwitterResourceEndpoint.REQUEST_TOKEN.getString());
+
 		authorization.setOauthCallback(callback);
 
-		Map requestHeaders = new HashMap<String, String>();
+		Map<String, String> requestHeaders = new HashMap<>();
 		requestHeaders.put("Authorization", authorization.get());
 
 		HttpRequest httpRequest = new HttpRequest();
@@ -34,7 +38,10 @@ public class ServiceProviderConnection {
 		httpRequest.setEndpoint(TwitterResourceEndpoint.REQUEST_TOKEN.getString());
 		httpRequest.setHeaders(requestHeaders);
 
+		/* execute */
 		HttpResponse response = HttpClient.execute(httpRequest);
+
+		/* response */
 		RequestToken requestToken = ResponseBodyParser.toRequestToken(response.getBody());
 		return requestToken;
 	}
@@ -48,8 +55,16 @@ public class ServiceProviderConnection {
 	 * @return
 	 * @throws TweetlyOAuthException
      */
-	public static AccessToken requestAccessToken(RequestToken requestToken, String oauthVerifier) throws TweetlyOAuthException {
-		Authorization authorization = new Authorization(Authorization.Method.POST, TwitterResourceEndpoint.ACCESS_TOKEN.getString());
+	public static AccessToken requestAccessToken(
+			RequestToken requestToken,
+			String oauthVerifier)
+			throws TweetlyOAuthException {
+
+		/* setup */
+		Authorization authorization = new Authorization(
+				Authorization.Method.POST,
+				TwitterResourceEndpoint.ACCESS_TOKEN.getString());
+
 		authorization.setToken(requestToken);
 		authorization.setOauthVerifier(oauthVerifier);
 
@@ -61,7 +76,10 @@ public class ServiceProviderConnection {
 		httpRequest.setEndpoint(TwitterResourceEndpoint.ACCESS_TOKEN.getString());
 		httpRequest.setHeaders(requestHeaders);
 
+		/* execute */
 		HttpResponse response = HttpClient.execute(httpRequest);
+
+		/* response */
 		AccessToken accessToken = ResponseBodyParser.toAccessToken(response.getBody());
 		return accessToken;
 	}
@@ -74,21 +92,27 @@ public class ServiceProviderConnection {
 	 * @return
 	 * @throws TweetlyOAuthException
      */
-	public static String get(String endpoint, Map queryParams, AccessToken acccessToken) throws TweetlyOAuthException{
+	public static String get(
+			String endpoint,
+			Map queryParams,
+			AccessToken acccessToken)
+			throws TweetlyOAuthException{
+
+		/* setup */
 		Authorization authorization = new Authorization(Authorization.Method.GET, endpoint);
 		authorization.setToken(acccessToken);
 		authorization.setQueryParams(queryParams);
 
-		Map requestHeaders = new HashMap<String, String>();
+		Map<String, String> requestHeaders = new HashMap<>();
 		requestHeaders.put("Authorization", authorization.get());
 
-		// 実行
 		HttpRequest httpRequest = new HttpRequest();
 		httpRequest.setMethod(HttpRequest.method.GET);
 		httpRequest.setEndpoint(endpoint);
 		httpRequest.setQueryParams(queryParams);
 		httpRequest.setHeaders(requestHeaders);
 
+		/* execute */
 		HttpResponse httpResponse = HttpClient.execute(httpRequest);
 
 		return httpResponse.getBody();
@@ -102,7 +126,13 @@ public class ServiceProviderConnection {
 	 * @return
 	 * @throws TweetlyOAuthException
 	 */
-	public static String post(String endpoint, Map queryParams, AccessToken acccessToken) throws TweetlyOAuthException{
+	public static String post(
+			String endpoint,
+			Map queryParams,
+			AccessToken acccessToken)
+			throws TweetlyOAuthException{
+
+		/* setup */
 		Authorization authorization = new Authorization(Authorization.Method.POST, endpoint);
 		authorization.setToken(acccessToken);
 		authorization.setQueryParams(queryParams);
@@ -117,6 +147,7 @@ public class ServiceProviderConnection {
 		httpRequest.setQueryParams(queryParams);
 		httpRequest.setHeaders(requestHeaders);
 
+		/* execute */
 		HttpResponse httpResponse = HttpClient.execute(httpRequest);
 
 		return httpResponse.getBody();

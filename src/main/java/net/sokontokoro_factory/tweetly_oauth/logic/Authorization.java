@@ -64,15 +64,9 @@ public class Authorization {
         this.oauthSignatureMethod = OAUTH_SIGNATURE_METHOD;
         this.oauthTimestamp = Calculation.getTimestamp();
         this.oauthVersion = OAUTH_VERSION;
+
+        this.method = method.name();
         this.endpoint = endpoint;
-        switch(method){
-            case GET:
-                this.method = "GET";
-                break;
-            case POST:
-                this.method = "POST";
-                break;
-        }
     }
 
     /**

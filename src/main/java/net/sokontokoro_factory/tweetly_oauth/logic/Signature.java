@@ -73,7 +73,9 @@ public class Signature {
             data.append(URLEncoder.encode(requestURL, "UTF-8"));
             data.append("&");
             data.append(URLEncoder.encode(parameter.toString(), "UTF-8"));
-        } catch (Exception e) {}
+        } catch (UnsupportedEncodingException e) {
+            // ignore
+        }
 
         return data.toString();
     }
@@ -89,7 +91,6 @@ public class Signature {
         String signature = null;
         try {
             signature_sha1 = Calculation.calcHmacSHA1(data, key);
-//            String signature_base64 = Base64.getEncoder().encodeToString(signature_sha1);
             String signature_base64 = DatatypeConverter.printBase64Binary(signature_sha1);
             signature = URLEncoder.encode(signature_base64, "UTF-8");
         } catch (InvalidKeyException | NoSuchAlgorithmException | UnsupportedEncodingException e) {

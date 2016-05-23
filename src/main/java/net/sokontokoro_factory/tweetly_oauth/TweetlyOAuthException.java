@@ -20,6 +20,7 @@ public class TweetlyOAuthException extends Exception{
     /* 4xx系 external error */
     public static int EXTERNAL_ERROR = 400;
     public static int EXTERNAL_ERROR_NO_PROPERTIES = 401;
+    public static int EXTERNAL_ERROR_SIGNATURE = 402;
 
     /* 5xx internal error */
     public static int INTERNALL_ERROR = 500;

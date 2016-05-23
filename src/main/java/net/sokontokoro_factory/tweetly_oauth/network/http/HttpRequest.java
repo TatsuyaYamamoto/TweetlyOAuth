@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class HttpRequest {
 
-    public static enum method{
+    public enum method{
         GET, POST
     }
 
