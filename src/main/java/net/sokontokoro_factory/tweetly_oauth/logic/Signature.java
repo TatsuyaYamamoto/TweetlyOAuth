@@ -33,7 +33,7 @@ public class Signature {
             String oauth_token_secret,
             String requestMethod,
             String requestURL,
-            TreeMap<String,String> element) throws TweetlyOAuthException {
+            TreeMap<String,String> element){
 
         /* logging */
         Object[] logParams = {consumer_secret, oauth_token_secret, requestMethod, requestURL, element};
@@ -72,7 +72,7 @@ public class Signature {
     private static String createData(
             String requestMethod,
             String requestURL,
-            TreeMap<String,String> element) throws TweetlyOAuthException {
+            TreeMap<String,String> element){
 
         StringBuffer parameter = new StringBuffer();
         int i = 0;
@@ -91,8 +91,7 @@ public class Signature {
             data.append("&");
             data.append(URLEncoder.encode(parameter.toString(), URL_ENCODE_NAME));
         } catch (UnsupportedEncodingException e) {
-            // ignore
-            throw new RuntimeException(e.getMessage(), e);
+            throw new TweetlyOAuthException(TweetlyOAuthException.INTERNALL_ERROR, e.getMessage());
         }
 
         return data.toString();
@@ -116,7 +115,7 @@ public class Signature {
         try {
             signature = URLEncoder.encode(signature_base64, URL_ENCODE_NAME);
         } catch (UnsupportedEncodingException e) {
-            // ignore
+            throw new TweetlyOAuthException(TweetlyOAuthException.INTERNALL_ERROR, e.getMessage());
         }
 
         return signature;

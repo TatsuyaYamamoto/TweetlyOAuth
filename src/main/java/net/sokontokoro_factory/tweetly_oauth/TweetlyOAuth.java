@@ -18,8 +18,9 @@ public class TweetlyOAuth {
 	 *
 	 * @param callback 認証後にコールバックするURL
 	 * @return
+	 * @throws TweetlyOAuthException
      */
-	public RequestToken getRequestToken(String callback) throws TweetlyOAuthException{
+	public RequestToken getRequestToken(String callback){
 		return ServiceProviderConnection.requestRequestToken(callback);
 	}
 
@@ -28,8 +29,9 @@ public class TweetlyOAuth {
 	 *
 	 * @param requestToken getRequestToken()で取得したRequestTokenオブジェクト
 	 * @return
+	 * @throws TweetlyOAuthException
      */
-	public URI getAuthorizePageUri(RequestToken requestToken)throws TweetlyOAuthException{
+	public URI getAuthorizePageUri(RequestToken requestToken){
 		URI uri = null;
 		try {
 			uri = new URI("https://api.twitter.com/oauth/authorize?oauth_token=" + requestToken.getToken());
@@ -49,7 +51,7 @@ public class TweetlyOAuth {
 	 * @return
 	 * @throws TweetlyOAuthException
      */
-	public AccessToken getAccessToken(RequestToken token, String oauthVerifier)throws TweetlyOAuthException{
+	public AccessToken getAccessToken(RequestToken token, String oauthVerifier){
 		return  ServiceProviderConnection.requestAccessToken(token, oauthVerifier);
 	}
 
@@ -61,7 +63,7 @@ public class TweetlyOAuth {
 	 * @return
 	 * @throws TweetlyOAuthException
      */
-	public String getUsersShow(String userId, AccessToken accessToken) throws TweetlyOAuthException{
+	public String getUsersShow(String userId, AccessToken accessToken){
 
 		Map queryParams = new HashMap();
 		queryParams.put("user_id", userId);

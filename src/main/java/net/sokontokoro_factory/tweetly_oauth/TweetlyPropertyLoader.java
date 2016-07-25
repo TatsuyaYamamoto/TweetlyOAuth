@@ -16,7 +16,13 @@ public class TweetlyPropertyLoader {
     private static String CONSUMER_SECRET_PROPERTY_KEY = "oauth_consumer_secret";
 
 
-    public static String getConsumerKey()throws TweetlyOAuthException {
+    /**
+     * consumer key を取得する
+     *
+     * @return
+     * @throws TweetlyOAuthException    ファイルがない場合
+     */
+    public static String getConsumerKey(){
         try{
             return loadFile().getProperty(CONSUMER_KEY_PROPERTY_KEY);
         }catch(NullPointerException e){
@@ -28,9 +34,15 @@ public class TweetlyPropertyLoader {
             throw  new TweetlyOAuthException(TweetlyOAuthException.INTERNALL_ERROR, "プロパティファイルを読み込めませんでした");
 
         }
-
     }
-    public static String getConsumerSecret()throws TweetlyOAuthException {
+
+    /**
+     * consumer secret を取得する
+     *
+     * @return
+     * @throws TweetlyOAuthException    ファイルがない場合
+     */
+    public static String getConsumerSecret(){
         try{
             return loadFile().getProperty(CONSUMER_SECRET_PROPERTY_KEY);
         }catch(NullPointerException e){
@@ -43,6 +55,13 @@ public class TweetlyPropertyLoader {
         }
     }
 
+    /**
+     * propertiesファイルを読み込む
+     *
+     * @return
+     * @throws IOException
+     * @throws NullPointerException
+     */
     private static Properties loadFile() throws IOException, NullPointerException {
 
         Properties properties = new Properties();

@@ -23,7 +23,7 @@ public class ServiceProviderConnection {
 	 * @return
 	 * @throws TweetlyOAuthException
      */
-	public static RequestToken requestRequestToken(String callback) throws TweetlyOAuthException {
+	public static RequestToken requestRequestToken(String callback){
 		logger.entering(ServiceProviderConnection.class.getSimpleName(), "requestRequestToken", callback);
 
 		/* setup */
@@ -62,8 +62,7 @@ public class ServiceProviderConnection {
      */
 	public static AccessToken requestAccessToken(
 			RequestToken requestToken,
-			String oauthVerifier)
-			throws TweetlyOAuthException {
+			String oauthVerifier){
 
 		Object[] params = {requestToken, oauthVerifier};
 		logger.entering(ServiceProviderConnection.class.getSimpleName(), "requestRequestToken", params);
@@ -105,8 +104,7 @@ public class ServiceProviderConnection {
 	public static String get(
 			String endpoint,
 			Map queryParams,
-			AccessToken acccessToken)
-			throws TweetlyOAuthException{
+			AccessToken acccessToken){
 
 		Object[] params = {endpoint, queryParams, acccessToken};
 		logger.entering(ServiceProviderConnection.class.getSimpleName(), "requestRequestToken", params);

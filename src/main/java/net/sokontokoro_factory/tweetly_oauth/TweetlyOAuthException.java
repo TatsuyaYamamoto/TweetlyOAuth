@@ -3,10 +3,7 @@ package net.sokontokoro_factory.tweetly_oauth;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * Created by TATSUYA-PC4 on 2016/04/09.
- */
-public class TweetlyOAuthException extends Exception{
+public class TweetlyOAuthException extends RuntimeException{
 
     /* field */
     @Getter

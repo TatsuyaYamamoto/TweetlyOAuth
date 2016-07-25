@@ -50,9 +50,9 @@ public class Authorization {
      *
      * @param method
      * @param endpoint
-     * @throws TweetlyOAuthException
+     * @throws TweetlyOAuthException    設定ファイルが読み取れなかった場合
      */
-    public Authorization(Method method, String endpoint) throws TweetlyOAuthException {
+    public Authorization(Method method, String endpoint){
         this.oauthConsumerKey       = TweetlyPropertyLoader.getConsumerKey();
         this.oauthConsumerSecret    = TweetlyPropertyLoader.getConsumerSecret();
 
@@ -71,7 +71,7 @@ public class Authorization {
      *
      * @return
      */
-    public String get() throws TweetlyOAuthException {
+    public String get(){
 
         TreeMap<String, String> authorizationMap = new TreeMap<>();
 
