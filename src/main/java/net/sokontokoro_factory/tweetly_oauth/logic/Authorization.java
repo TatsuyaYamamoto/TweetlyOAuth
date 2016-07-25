@@ -5,7 +5,6 @@ import lombok.Setter;
 import net.sokontokoro_factory.tweetly_oauth.TweetlyOAuthException;
 import net.sokontokoro_factory.tweetly_oauth.TweetlyPropertyLoader;
 import net.sokontokoro_factory.tweetly_oauth.dto.AbstructToken;
-import net.sokontokoro_factory.tweetly_oauth.util.Calculation;
 
 import java.util.Map;
 import java.util.TreeMap;
