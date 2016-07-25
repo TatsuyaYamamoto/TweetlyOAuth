@@ -13,6 +13,7 @@ import static org.junit.Assert.assertThat;
  * Created by TATSUYA-PC4 on 2016/04/10.
  */
 public class ResponseBodyParserTest {
+    private ResponseBodyParser targetClass = new ResponseBodyParser();
 
     @Test
     public void RequestTokenオブジェクトに変換する() throws Exception {
