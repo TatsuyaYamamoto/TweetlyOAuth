@@ -23,6 +23,7 @@ public class TweetlyOAuthException extends Exception{
     /* 5xx internal error */
     public static int INTERNALL_ERROR = 500;
     public static int SIGNATURE_ERROR = 501;
+    public static int TWITTER_CONNECTION_ERROR = 502;
 
     /* コンストラクタ */
     public TweetlyOAuthException(){

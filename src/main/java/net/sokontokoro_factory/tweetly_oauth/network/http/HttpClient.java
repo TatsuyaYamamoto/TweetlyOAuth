@@ -1,6 +1,5 @@
 package net.sokontokoro_factory.tweetly_oauth.network.http;
 
-import net.sokontokoro_factory.tweetly_oauth.TweetlyOAuth;
 import net.sokontokoro_factory.tweetly_oauth.TweetlyOAuthException;
 
 import java.io.BufferedReader;
@@ -12,13 +11,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- * Created by TATSUYA-PC4 on 2016/04/09.
- */
 public class HttpClient {
+    private static final Logger logger = Logger.getLogger(HttpClient.class.getName());
 
     public static HttpResponse execute(HttpRequest httpRequest)throws TweetlyOAuthException{
+
+        logger.entering(HttpClient.class.getSimpleName(), "execute", httpRequest);
 
         HttpURLConnection connection = null;
 
@@ -56,15 +57,25 @@ public class HttpClient {
                 case HttpURLConnection.HTTP_OK:
                     responseBody = getResponseBody(connection);
                     responseHeaders = getResponseHeaders(connection);
+
+                    logger.log(Level.INFO, "request to Twitter is OK.");
+                    logger.log(Level.INFO, "header: " + responseHeaders);
+                    logger.log(Level.INFO, "param: " + responseBody);
+
                     break;
 
                 case HttpURLConnection.HTTP_UNAUTHORIZED:
-                    throw new TweetlyOAuthException(
+                    TweetlyOAuthException e = new TweetlyOAuthException(
                             TweetlyOAuthException.EXTERNAL_ERROR_SIGNATURE,
                             "TwitterServer間の通信で認証エラーが発生しました");
 
+                    logger.throwing(HttpClient.class.getSimpleName(), "execute", e);
+                    throw e;
+
                 default:
-                    throw new TweetlyOAuthException();
+                    String response = getResponseBody(connection);
+                    logger.log(Level.WARNING, response);
+                    throw new TweetlyOAuthException(TweetlyOAuthException.TWITTER_CONNECTION_ERROR, response);
             }
 
             /* create http response object */
@@ -72,7 +83,9 @@ public class HttpClient {
             httpResponse.setBody(responseBody);
             httpResponse.setHeaders(responseHeaders);
 
+            logger.exiting(HttpClient.class.getSimpleName(), "execute", httpResponse);
             return httpResponse;
+
         }catch(IOException e){
             throw new TweetlyOAuthException();
         }finally {

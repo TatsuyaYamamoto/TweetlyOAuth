@@ -11,8 +11,10 @@ import net.sokontokoro_factory.tweetly_oauth.network.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 public class ServiceProviderConnection {
+	private static Logger logger = Logger.getLogger(ServiceProviderConnection.class.getName());
 
 	/**
 	 * request Tokenオブジェクトを返す。
@@ -22,6 +24,8 @@ public class ServiceProviderConnection {
 	 * @throws TweetlyOAuthException
      */
 	public static RequestToken requestRequestToken(String callback) throws TweetlyOAuthException {
+		logger.entering(ServiceProviderConnection.class.getSimpleName(), "requestRequestToken", callback);
+
 		/* setup */
 		Authorization authorization = new Authorization(
 				Authorization.Method.POST,
@@ -42,6 +46,8 @@ public class ServiceProviderConnection {
 
 		/* response */
 		RequestToken requestToken = ResponseBodyParser.toRequestToken(response.getBody());
+
+		logger.exiting(ServiceProviderConnection.class.getSimpleName(), "requestRequestToken", requestToken);
 		return requestToken;
 	}
 
@@ -58,6 +64,9 @@ public class ServiceProviderConnection {
 			RequestToken requestToken,
 			String oauthVerifier)
 			throws TweetlyOAuthException {
+
+		Object[] params = {requestToken, oauthVerifier};
+		logger.entering(ServiceProviderConnection.class.getSimpleName(), "requestRequestToken", params);
 
 		/* setup */
 		Authorization authorization = new Authorization(
@@ -80,6 +89,8 @@ public class ServiceProviderConnection {
 
 		/* response */
 		AccessToken accessToken = ResponseBodyParser.toAccessToken(response.getBody());
+
+		logger.exiting(ServiceProviderConnection.class.getSimpleName(), "requestRequestToken", accessToken);
 		return accessToken;
 	}
 
@@ -97,6 +108,9 @@ public class ServiceProviderConnection {
 			AccessToken acccessToken)
 			throws TweetlyOAuthException{
 
+		Object[] params = {endpoint, queryParams, acccessToken};
+		logger.entering(ServiceProviderConnection.class.getSimpleName(), "requestRequestToken", params);
+
 		/* setup */
 		Authorization authorization = new Authorization(Authorization.Method.GET, endpoint);
 		authorization.setToken(acccessToken);
@@ -113,66 +127,9 @@ public class ServiceProviderConnection {
 
 		/* execute */
 		HttpResponse httpResponse = HttpClient.execute(httpRequest);
+		String body = httpResponse.getBody();
 
-		return httpResponse.getBody();
-	}
-
-	/**
-	 * twitter restful api のリソースに対してpostを実行する
-	 * @param endpoint
-	 * @param queryParams
-	 * @param acccessToken
-	 * @return
-	 * @throws TweetlyOAuthException
-	 */
-	public static String post(
-			String endpoint,
-			Map queryParams,
-			AccessToken acccessToken)
-			throws TweetlyOAuthException{
-
-		/* setup */
-		Authorization authorization = new Authorization(Authorization.Method.POST, endpoint);
-		authorization.setToken(acccessToken);
-		authorization.setQueryParams(queryParams);
-
-		Map requestHeaders = new HashMap<String, String>();
-		requestHeaders.put("Authorization", authorization.get());
-
-		// 実行
-		HttpRequest httpRequest = new HttpRequest();
-		httpRequest.setMethod(HttpRequest.method.GET);
-		httpRequest.setEndpoint(endpoint);
-		httpRequest.setQueryParams(queryParams);
-		httpRequest.setHeaders(requestHeaders);
-
-		/* execute */
-		HttpResponse httpResponse = HttpClient.execute(httpRequest);
-
-		return httpResponse.getBody();
-	}
-
-
-	/**
-	 * twitter apiアクセス用の request headerを作成する
-	 * @param element
-	 * @return
-     */
-	private static String getRequestHeaderAuthorization(TreeMap<String,String> element){
-		StringBuffer requestHeader = new StringBuffer();
-		int i = 0;
-		for(String key: element.keySet()){
-			if(i==0){
-				requestHeader.append("OAuth ");
-			}else{
-				requestHeader.append(",");
-			}
-			requestHeader.append(key);
-			requestHeader.append("=");
-			requestHeader.append(element.get(key));
-			i++;
-		}
-
-		return requestHeader.toString();
+		logger.exiting(ServiceProviderConnection.class.getSimpleName(), "requestRequestToken", body);
+		return body;
 	}
 }
