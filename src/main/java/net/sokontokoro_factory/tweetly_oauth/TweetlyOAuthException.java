@@ -10,10 +10,8 @@ public class TweetlyOAuthException extends Exception{
 
     /* field */
     @Getter
-    @Setter
     private int code;
     @Getter
-    @Setter
     private String message;
 
     /* error code */
@@ -28,7 +26,7 @@ public class TweetlyOAuthException extends Exception{
 
     /* コンストラクタ */
     public TweetlyOAuthException(){
-        code = EXTERNAL_ERROR;
+        code = INTERNALL_ERROR;
         message = "システムエラー";
     }
     public TweetlyOAuthException(int code, String message){
