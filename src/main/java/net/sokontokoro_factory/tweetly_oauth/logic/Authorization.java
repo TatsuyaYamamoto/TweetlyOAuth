@@ -34,19 +34,14 @@ public class Authorization {
     private String endpoint;
 
     /* optional */
-    @Getter
     @Setter
     private String oauthCallback;
-    @Getter
     @Setter
     private AbstructToken token;
-    @Getter
     @Setter
     private String oauthVerifier;
-    @Getter
     @Setter
     private String oauthSignature;
-    @Getter
     @Setter
     Map<String, String> queryParams;
 
@@ -58,12 +53,14 @@ public class Authorization {
      * @throws TweetlyOAuthException
      */
     public Authorization(Method method, String endpoint) throws TweetlyOAuthException {
-        this.oauthConsumerKey = TweetlyPropertyLoader.getConsumerKey();
-        this.oauthConsumerSecret = TweetlyPropertyLoader.getConsumerSecret();
-        this.oauthNonce = getNonce();
-        this.oauthSignatureMethod = OAUTH_SIGNATURE_METHOD;
-        this.oauthTimestamp = getTimestamp();
-        this.oauthVersion = OAUTH_VERSION;
+        this.oauthConsumerKey       = TweetlyPropertyLoader.getConsumerKey();
+        this.oauthConsumerSecret    = TweetlyPropertyLoader.getConsumerSecret();
+
+        this.oauthVersion           = OAUTH_VERSION;
+        this.oauthSignatureMethod   = OAUTH_SIGNATURE_METHOD;
+
+        this.oauthTimestamp         = Long.toString(System.currentTimeMillis() / 1000);
+        this.oauthNonce             = UUID.randomUUID().toString();
 
         this.method = method.name();
         this.endpoint = endpoint;
@@ -86,10 +83,18 @@ public class Authorization {
         authorizationMap.put("oauth_version",           this.oauthVersion);
 
         // optional params
-        if(oauthCallback != null)   authorizationMap.put("oauth_callback",  this.oauthCallback);
-        if(token != null)           authorizationMap.put("oauth_token",     this.token.getToken());
-        if(oauthVerifier != null)   authorizationMap.put("oauth_verifier",  this.oauthVerifier);
-        if(queryParams != null && queryParams.size() != 0) authorizationMap.putAll(queryParams);
+        if(oauthCallback != null){
+            authorizationMap.put("oauth_callback", this.oauthCallback);
+        }
+        if(token != null){
+            authorizationMap.put("oauth_token", this.token.getToken());
+        }
+        if(oauthVerifier != null){
+            authorizationMap.put("oauth_verifier", this.oauthVerifier);
+        }
+        if(queryParams != null && queryParams.size() != 0){
+            authorizationMap.putAll(queryParams);
+        }
 
         String signature = Signature.generate(
                 this.oauthConsumerSecret,
@@ -123,14 +128,5 @@ public class Authorization {
         }
 
         return authorizationString.toString();
-    }
-
-
-    private static String getTimestamp(){
-        return Long.toString(System.currentTimeMillis() / 1000);
-    }
-
-    private static String getNonce(){
-        return UUID.randomUUID().toString();
     }
 }
