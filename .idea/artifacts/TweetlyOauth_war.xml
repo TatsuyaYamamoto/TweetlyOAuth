@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="TweetlyOauth:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="tweetly_oauth-1.0.20160430.war">
+      <element id="artifact" artifact-name="TweetlyOauth:war exploded" />
+    </root>
+  </artifact>
+</component>
