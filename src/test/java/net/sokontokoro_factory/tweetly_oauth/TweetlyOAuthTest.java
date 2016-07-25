@@ -15,6 +15,7 @@ public class TweetlyOAuthTest {
     private static String ACCESS_TOKEN = "298062670-V47MZpkeszBx9aWEYmYRPTCTLjHFKWudAUNc7d05";
     private static String ACCESS_TOKEN_SECRET = "TUODpJhOSDajAortXlKDgaWK0NqgdkcqGrDGAcTbWJ3iy";
     private static String USER_ID = "298062670";
+    private static String USER_ICON_URL = "http://pbs.twimg.com/profile_images/3144229927/1ebde74324e5fb5d91ec6aa9bc3024fa_normal.gif";
 
     @Test
     public void リクエストトークンを取得できる() throws Exception {
@@ -25,6 +26,19 @@ public class TweetlyOAuthTest {
         assertNotNull(token.getToken());
         assertNotNull(token.getTokenSecret());
         assertNotNull(token.getOauthCallbackConfirmed());
+    }
+
+    @Test
+    public void リクエストトークンから認証用ページのURIを作成する() throws Exception {
+        /* リクエストトークンを作成する */
+        RequestToken token = new RequestToken();
+        token.setToken("anytoken");
+
+        /* APIリクエスト。取得したJSONからプロファイル画像のURLを抜き出す */
+        String uri = targetClass.getAuthorizePageUri(token).toString();
+
+        /* assert */
+        assertThat(uri, is("https://api.twitter.com/oauth/authorize?oauth_token=" + token.getToken()));
     }
 
     @Test
@@ -40,7 +54,7 @@ public class TweetlyOAuthTest {
         String profileImageUrl = new JSONObject(actualBody).get("profile_image_url").toString();
 
         /* assert */
-        assertThat(profileImageUrl, is("http://pbs.twimg.com/profile_images/3144229927/1ebde74324e5fb5d91ec6aa9bc3024fa_normal.gif"));
+        assertThat(profileImageUrl, is(USER_ICON_URL));
     }
 
     @Before

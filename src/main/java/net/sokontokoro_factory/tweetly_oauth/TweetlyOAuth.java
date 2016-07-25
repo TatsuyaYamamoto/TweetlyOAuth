@@ -15,6 +15,7 @@ public class TweetlyOAuth {
 
 	/**
 	 * リクエストトークンを取得する
+	 *
 	 * @param callback 認証後にコールバックするURL
 	 * @return
      */
@@ -24,6 +25,7 @@ public class TweetlyOAuth {
 
 	/**
 	 * リクエストトークンをパラメーターに含んだOAuth認証用のページのURIオブジェクトを取得する。
+	 *
 	 * @param requestToken getRequestToken()で取得したRequestTokenオブジェクト
 	 * @return
      */
@@ -41,7 +43,7 @@ public class TweetlyOAuth {
 
 
 	/**
-	 *
+	 * アクセストークンを取得する
 	 * @param token
 	 * @param oauthVerifier
 	 * @return
@@ -51,6 +53,14 @@ public class TweetlyOAuth {
 		return  ServiceProviderConnection.requestAccessToken(token, oauthVerifier);
 	}
 
+	/**
+	 * ユーザーのプロファイル情報を取得する
+	 *
+	 * @param userId
+	 * @param accessToken
+	 * @return
+	 * @throws TweetlyOAuthException
+     */
 	public String getUsersShow(String userId, AccessToken accessToken) throws TweetlyOAuthException{
 
 		Map queryParams = new HashMap();
@@ -58,13 +68,4 @@ public class TweetlyOAuth {
 
 		return ServiceProviderConnection.get(TwitterResourceEndpoint.USERS_SHOW.getString(), queryParams, accessToken);
 	}
-	public String getTwitterResource(
-			String endpoint,
-			Map params,
-			AccessToken accessToken)throws TweetlyOAuthException{
-
-		return ServiceProviderConnection.get(endpoint, params, accessToken);
-
-	}
-
 }
