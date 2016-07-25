@@ -1,6 +1,5 @@
 package net.sokontokoro_factory.tweetly_oauth.logic;
 
-import net.sokontokoro_factory.tweetly_oauth.TweetlyOAuthException;
 import org.junit.Test;
 
 import java.util.TreeMap;
@@ -9,9 +8,6 @@ import java.lang.reflect.Method;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-/**
- * Created by TATSUYA-PC4 on 2016/04/14.
- */
 public class SignatureTest {
 
     @Test

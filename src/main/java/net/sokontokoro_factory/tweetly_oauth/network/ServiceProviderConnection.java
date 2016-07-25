@@ -7,7 +7,6 @@ import net.sokontokoro_factory.tweetly_oauth.logic.Authorization;
 import net.sokontokoro_factory.tweetly_oauth.network.http.HttpClient;
 import net.sokontokoro_factory.tweetly_oauth.network.http.HttpRequest;
 import net.sokontokoro_factory.tweetly_oauth.network.http.HttpResponse;
-import net.sokontokoro_factory.tweetly_oauth.util.ResponseBodyParser;
 
 import java.util.HashMap;
 import java.util.Map;

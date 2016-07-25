@@ -9,6 +9,7 @@ import net.sokontokoro_factory.tweetly_oauth.util.Calculation;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 /**
  * Created by TATSUYA-PC4 on 2016/04/09.
@@ -60,9 +61,9 @@ public class Authorization {
     public Authorization(Method method, String endpoint) throws TweetlyOAuthException {
         this.oauthConsumerKey = TweetlyPropertyLoader.getConsumerKey();
         this.oauthConsumerSecret = TweetlyPropertyLoader.getConsumerSecret();
-        this.oauthNonce = Calculation.getNonce();
+        this.oauthNonce = getNonce();
         this.oauthSignatureMethod = OAUTH_SIGNATURE_METHOD;
-        this.oauthTimestamp = Calculation.getTimestamp();
+        this.oauthTimestamp = getTimestamp();
         this.oauthVersion = OAUTH_VERSION;
 
         this.method = method.name();
@@ -125,4 +126,12 @@ public class Authorization {
         return authorizationString.toString();
     }
 
+
+    private static String getTimestamp(){
+        return Long.toString(System.currentTimeMillis() / 1000);
+    }
+
+    private static String getNonce(){
+        return UUID.randomUUID().toString();
+    }
 }

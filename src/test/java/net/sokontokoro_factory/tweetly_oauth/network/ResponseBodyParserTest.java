@@ -1,7 +1,8 @@
-package net.sokontokoro_factory.tweetly_oauth.util;
+package net.sokontokoro_factory.tweetly_oauth.network;
 
 import net.sokontokoro_factory.tweetly_oauth.dto.AccessToken;
 import net.sokontokoro_factory.tweetly_oauth.dto.RequestToken;
+import net.sokontokoro_factory.tweetly_oauth.network.ResponseBodyParser;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
